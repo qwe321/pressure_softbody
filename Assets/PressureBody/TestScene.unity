@@ -495,7 +495,7 @@ MonoBehaviour:
   pressure: 10000
   gravity: 10
   timeStep: 0.01
-  speed: 3
+  speed: 5
   pressureScale: 0.249
   pinsContainers:
   - {fileID: 8296172668554460831}

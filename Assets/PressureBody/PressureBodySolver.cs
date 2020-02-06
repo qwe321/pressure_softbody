@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 using Random = System.Random;
+using Unity.Burst;
 
 namespace PressureBody
 {
@@ -23,6 +24,7 @@ namespace PressureBody
         public float distance;
     }
 
+    [BurstCompile]
     public struct ResetJob : IJobParallelFor
     {
         public NativeArray<Vector3> normals;
@@ -37,6 +39,7 @@ namespace PressureBody
         }
     }
     
+    [BurstCompile]
     public struct TriangleCrossJob : IJobFor
     {
         [ReadOnly] public NativeArray<Vector3> positions;
@@ -68,6 +71,7 @@ namespace PressureBody
         }
     }
     
+    [BurstCompile]
     public struct SpringPass : IJobFor
     {
         [ReadOnly] public NativeArray<Spring> springs;
@@ -96,7 +100,8 @@ namespace PressureBody
             forces[springs[i].b] -= force;
         }
     }
-
+    
+    [BurstCompile]
     public struct PressurePass : IJobParallelFor
     {
         [ReadOnly] public NativeArray<Vector3> normals;
@@ -320,18 +325,6 @@ namespace PressureBody
             Debug.Log($"Build mesh with {uniquePositions.Count} pos, {meshTriangles.Length} tris, {springsList.Count} springs, {pins.Count} pins.");
         }
         
-        public static Quaternion QuaternionFromMatrix(Matrix4x4 m) {
-            Quaternion q = new Quaternion();
-            q.w = Mathf.Sqrt( Mathf.Max( 0, 1 + m[0,0] + m[1,1] + m[2,2] ) ) / 2; 
-            q.x = Mathf.Sqrt( Mathf.Max( 0, 1 + m[0,0] - m[1,1] - m[2,2] ) ) / 2; 
-            q.y = Mathf.Sqrt( Mathf.Max( 0, 1 - m[0,0] + m[1,1] - m[2,2] ) ) / 2; 
-            q.z = Mathf.Sqrt( Mathf.Max( 0, 1 - m[0,0] - m[1,1] + m[2,2] ) ) / 2; 
-            q.x *= Mathf.Sign( q.x * ( m[2,1] - m[1,2] ) );
-            q.y *= Mathf.Sign( q.y * ( m[0,2] - m[2,0] ) );
-            q.z *= Mathf.Sign( q.z * ( m[1,0] - m[0,1] ) );
-            return q;
-        }
-        
         void ApplyTriangleTransformToSocket(int tri, Transform trans) 
         {
             var ta = positions[triangles[tri].a];
@@ -419,6 +412,8 @@ namespace PressureBody
 
         void Update()
         {
+            var startTime = Time.realtimeSinceStartup;
+            
             for (int i = 0; i < settings.speed; ++i)
             {
                 Simulate();
@@ -438,6 +433,8 @@ namespace PressureBody
             {
                 ApplyTriangleTransformToSocket(s.triangle, s.socket.transform);
             }
+            
+            //Debug.Log($"Total physics time {(Time.realtimeSinceStartup-startTime)*1000} ms");
         }
     }
         
