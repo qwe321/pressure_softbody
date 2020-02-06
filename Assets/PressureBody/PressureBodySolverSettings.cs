@@ -11,6 +11,7 @@ namespace PressureBody
                 public float pressure = 0;
                 public float gravity;
                 public float timeStep = 0.02f;
+                public float totalDamping = 0.999f;
                 public int speed = 3;
                 [Range(0.001f, 1)]
                 public float pressureScale = 1;

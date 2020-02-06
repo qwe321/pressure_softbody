@@ -29,13 +29,16 @@ namespace PressureBody
     {
         public NativeArray<Vector3> normals;
         public NativeArray<Vector3> forces;
+        public NativeArray<Vector3> velocities;
 
         public float gravity;
+        public float totalDamping;
 
         public void Execute(int index)
         {
             normals[index] = Vector3.zero;
             forces[index] = Vector3.down * gravity;
+            velocities[index] *= totalDamping;
         }
     }
     
@@ -358,7 +361,9 @@ namespace PressureBody
             {
                 normals = normals,
                 forces = forces,
-                gravity = settings.gravity
+                velocities = velocities,
+                gravity = settings.gravity,
+                totalDamping = settings.totalDamping
             };
             
             var dep = new JobHandle();
@@ -434,7 +439,7 @@ namespace PressureBody
                 ApplyTriangleTransformToSocket(s.triangle, s.socket.transform);
             }
             
-            //Debug.Log($"Total physics time {(Time.realtimeSinceStartup-startTime)*1000} ms");
+            Debug.Log($"Total physics time {(Time.realtimeSinceStartup-startTime)*1000} ms");
         }
     }
         
