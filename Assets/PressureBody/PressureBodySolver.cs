@@ -31,13 +31,13 @@ namespace PressureBody
         public NativeArray<Vector3> forces;
         public NativeArray<Vector3> velocities;
 
-        public float gravity;
+        public Vector3 gravity;
         public float totalDamping;
 
         public void Execute(int index)
         {
             normals[index] = Vector3.zero;
-            forces[index] = Vector3.down * gravity;
+            forces[index] = gravity;
             velocities[index] *= totalDamping;
         }
     }
@@ -362,7 +362,7 @@ namespace PressureBody
                 normals = normals,
                 forces = forces,
                 velocities = velocities,
-                gravity = settings.gravity,
+                gravity = transform.InverseTransformDirection(Vector3.down) * settings.gravity,
                 totalDamping = settings.totalDamping
             };
             

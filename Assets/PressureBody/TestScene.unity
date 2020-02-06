@@ -1101,7 +1101,7 @@ MonoBehaviour:
   pressure: 100000
   gravity: 2
   timeStep: 0.01
-  totalDamping: 0.99
+  totalDamping: 0.995
   speed: 20
   pressureScale: 0.063
   pinsContainers:
@@ -1189,7 +1189,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8296172667684151306}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -1.1527336, z: 0.3561982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1198,7 +1198,7 @@ Transform:
   - {fileID: 492562717}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &7718390321940026582
 MeshRenderer:
   m_ObjectHideFlags: 0
